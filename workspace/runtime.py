@@ -174,4 +174,9 @@ def publish(root,ledger,*,include_source=True):
     git(root,'push','origin','main')
     sha=git(root,'rev-parse','HEAD');remote=git(root,'ls-remote','origin','refs/heads/main').split()[0]
     if sha!=remote:raise RuntimeError('remote_verification_failed')
-    ledger.set('remote_verified',sha);ledger.set('synced_at',now());return sha
+    with ledger.db:
+        ledger.db.executemany('insert or replace into meta values(?,?)', (
+            ('remote_verified',sha),
+            ('published_event_count',str(ledger.db.execute('select count(*) from events').fetchone()[0])),
+            ('synced_at',now())))
+    return sha

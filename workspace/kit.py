@@ -13,6 +13,7 @@ from .warm import accept_checkpoint, collect_warm
 from .retrieval import recall, repositories
 from .reconcile import prepare
 from .settings import repository, expected_origin
+from .status import publication_snapshot
 
 STATE=Path.home()/'.local/share/ai-workspace-kit'
 MEMORY=Path.home()/'ai-workspace-memory'
@@ -95,6 +96,7 @@ def run(a):
     if a.memory==a.state or a.memory in a.state.parents or a.state in a.memory.parents:
         raise ValueError('separate_state_required')
     with Bridge(a.state).locked() as ledger:
+        if a.command=='status':return {'ok':True,'publication':publication_snapshot(ledger)}
         if a.command=='allow-root':return allow_root(a.state,a.path,a.label)
         if a.command=='recall':return recall(ledger,a.query,allow_cold=False)
         if a.command in ('checkpoint','tick','sync','restore'):
@@ -129,7 +131,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--state',type=Path,default=STATE);p.add_argument('--memory',type=Path,default=MEMORY)
     sub=p.add_subparsers(dest='command',required=True)
-    for name in ('init','checkpoint','tick','sync','restore','doctor'):sub.add_parser(name)
+    for name in ('init','checkpoint','tick','sync','restore','doctor','status'):sub.add_parser(name)
     b=sub.add_parser('bind-github');b.add_argument('repository')
     a=sub.add_parser('allow-root');a.add_argument('path');a.add_argument('--label',required=True)
     q=sub.add_parser('recall');q.add_argument('query')

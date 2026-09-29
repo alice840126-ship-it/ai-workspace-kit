@@ -38,6 +38,19 @@ class ArtifactsTest(unittest.TestCase):
         self.index.index()
         self.assertIn('4회',self.index.read(identity)['text'])
         self.assertEqual(self.index.db.execute('select count(*) from artifacts').fetchone()[0],1)
+    def test_natural_followup_uses_labeled_partial_candidates_and_source_read(self):
+        self.write('ExampleCo_견적서.txt','ExampleCo 견적서 금액 10,000,000원 VAT 별도 교육 3회')
+        self.write('unrelated.txt','시설 관리 일정')
+        self.write('Other_교육.txt','다른 고객 교육 5회')
+        self.index.index()
+        exact=self.index.search('ExampleCo 견적서')['results']
+        self.assertEqual(exact[0]['match_mode'],'all_terms')
+        followup=self.index.search('ExampleCo 견적서 교육 횟수')['results']
+        self.assertEqual([r['filename'] for r in followup],['ExampleCo_견적서.txt'])
+        self.assertEqual(followup[0]['match_mode'],'partial_terms')
+        self.assertIn('교육 3회',self.index.read(followup[0]['id'])['text'])
+        self.assertEqual(self.index.search('ExampleCo 교육')['results'][0]['filename'],'ExampleCo_견적서.txt')
+        self.assertEqual(self.index.search('찾을수없는 고유표현')['results'],[])
     def test_deny_secret_symlink_hardlink_and_allowlist_revocation(self):
         self.write('.env','ExampleCo')
         self.write('node_modules/quote.txt','ExampleCo')

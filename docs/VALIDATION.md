@@ -1,5 +1,14 @@
 # Validation record — 2026-09-29
 
+## Cross-client guidance, publication status, and search quality update
+
+- 118 local unit/integration tests passed on macOS. Added checks cover publication receipt wording, changed local event count, local-only status (no network), recall audit metadata, and partial-match source re-read.
+- `ai-workspace status` and MCP health/recall expose the **last successful** GitHub verification receipt, not a live remote freshness claim. The optional `--audit-calls` records `workspace_recall` tool usage without query or result text.
+- On a three-document synthetic fixture, `ExampleCo 견적서 교육 횟수` returned the correct quotation as a `partial_terms` candidate; fresh `read` confirmed “교육 3회”. `ExampleCo 교육` ranked the correct quotation before a different customer's education document. A nonsense unique query returned no result. This is a small regression fixture, not an operational relevance benchmark.
+- Added copyable client guidance and a smoke-check sequence that requires actual tool calls. No new public-package ChatGPT, Aside, or voice invocation was performed in this update.
+- No semantic model or bulk embedding was installed. The measured lexical gap was addressed without model calls; the threshold and evidence needed before adding a local semantic option are in [SEARCH-QUALITY.md](SEARCH-QUALITY.md).
+- `git diff --check` and a local `gitleaks dir` scan passed before publication.
+
 This record describes the public distribution, using synthetic data only.
 
 - Fresh project virtual environment; editable package installation and `pip check` passed.

@@ -11,6 +11,14 @@
 
 ## 2. GitHub 연결
 
+`ai-workspace status`는 마지막 GitHub 게시 검증 시각과 짧은 commit, 현재 로컬 정제 이벤트 수,
+미승격 checkpoint 수를 보여줍니다. `last_sync_verified`는 **그 당시의 게시 성공**이며 현재 원격을
+실시간 조회한 결과가 아닙니다. `local_refined_updates_after_sync`라면 로컬 정제 기억이 마지막 게시
+시점과 달라진 상태입니다. `prior_receipt_without_event_baseline`은 구버전 게시 기록으로 비교 기준이
+없다는 뜻입니다. `sync` 후 새 게시 기록을 만드세요. 미승격 checkpoint는 자동 게시 대상이 아닙니다.
+MCP의 `workspace_health`·`workspace_recall`에도 같은 `publication` 요약이 있습니다.
+
+
 `gh`, `git`, `gitleaks`를 설치하고 `gh auth login`을 완료합니다.
 아래 명령의 `YOUR_NAME/my-ai-memory`를 자신의 비공개 저장소 이름으로 바꾸세요.
 설치 후 `ai-workspace init`을 이미 실행했다면 그대로 다음을 진행합니다.

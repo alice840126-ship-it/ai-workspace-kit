@@ -37,6 +37,8 @@ Agents submit structured checkpoints using `examples/checkpoint.json`; use a cur
 stamp. This does not scrape every chat or automatically capture conversations in every client.
 `ai-workspace tick` promotes eligible summaries, updates Markdown, incrementally indexes approved
 documents and syncs a bound private repository without model calls. No scheduler is installed automatically.
+`ai-workspace status` reports the last verified GitHub publication and local refined changes. It is
+not a live remote check.
 
 ## Tools
 
@@ -53,7 +55,10 @@ A healthy tunnel is not proof of a successful ChatGPT tool call. Your source mac
 Markdown, TXT, JSON/JSONL, PDF and DOCX are supported. PDF needs Poppler's `pdftotext`; scanned PDFs
 need separate OCR. Secrets/dotfiles/packages/symlinks are excluded, but filters are not perfect.
 Do not register folders containing data you must not share with the connected client.
+If all search terms miss, a bounded partial-term fallback returns labeled candidates. Always call
+`read_local_artifact` before answering from source content. No embedding model is installed.
 
 See [full Korean guide](../README.md), [operations](../OPERATIONS.md),
-[client setup](CLIENTS.md), [security](../SECURITY.md), and [contributing](../CONTRIBUTING.md).
+[client setup](CLIENTS.md), [agent guidance](AGENT-GUIDANCE.md), [search quality](SEARCH-QUALITY.md),
+[security](../SECURITY.md), and [contributing](../CONTRIBUTING.md).
 MIT licensed. Stars, synthetic bug reports and documentation improvements are welcome.

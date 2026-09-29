@@ -51,6 +51,11 @@ class KitTests(unittest.TestCase):
         replies=[subprocess.CompletedProcess([],0,'true\n',''),subprocess.CompletedProcess([],0,'https://github.com/example/private.git','')]
         with patch('subprocess.run',side_effect=replies):bind(self.memory,self.state,'example/private')
         self.assertEqual(repository(self.state),'example/private');self.assertEqual(expected_origin(self.state),'https://github.com/example/private.git')
+    def test_status_is_local_and_does_not_verify_remote(self):
+        init(self.memory,self.state)
+        with patch('subprocess.run',side_effect=AssertionError('status must stay local')):
+            result=run(Namespace(command='status',memory=self.memory,state=self.state))
+        self.assertEqual(result['publication']['state'],'not_configured')
     def test_checkpoint_promotes_and_tick_never_summarizes(self):
         init(self.memory,self.state);data=checkpoint();data['explicit_memory']=True
         args=Namespace(command='checkpoint',memory=self.memory,state=self.state)

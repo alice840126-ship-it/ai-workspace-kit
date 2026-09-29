@@ -68,6 +68,28 @@ class BridgeTests(unittest.TestCase):
     def test_health_has_no_paths_or_source_content(self):
         result=self.bridge.health();self.assertFalse(result['cold_enabled']);self.assertEqual(result['transport'],'stdio')
         self.assertNotIn(str(self.state),json.dumps(result))
+        self.assertEqual(result['publication']['state'],'not_configured')
+    def test_publication_receipt_does_not_claim_live_remote_freshness(self):
+        self.state.mkdir();(self.state/'github-repository.json').write_text('{}')
+        ledger=Ledger(self.state)
+        try:
+            ledger.set('remote_verified','a'*40);ledger.set('synced_at',now());ledger.set('published_event_count',0)
+        finally:ledger.db.close()
+        self.assertEqual(self.bridge.health()['publication']['state'],'last_sync_verified')
+        self.assertEqual(self.bridge.recall('브리지')['publication']['verification_scope'],'last_successful_sync_only')
+        ledger=Ledger(self.state)
+        try:ledger.record('session','turn',checkpoint()['memory'])
+        finally:ledger.db.close()
+        self.assertEqual(self.bridge.health()['publication']['state'],'local_refined_updates_after_sync')
+        self.assertEqual(self.bridge.health()['publication']['last_verified_commit'],'a'*12)
+    def test_recall_audit_records_layer_without_query_or_content(self):
+        self.state.mkdir()
+        audit_artifact_call(self.state,'recall',{'ok':True,'layer':'warm','results':[{'text':'synthetic private summary'}]})
+        saved=json.loads((self.state/'bridge-call-audit.jsonl').read_text())
+        self.assertEqual(saved['tool'],'workspace_recall')
+        self.assertEqual(saved['layer'],'warm')
+        self.assertEqual(saved['result_count'],1)
+        self.assertNotIn('synthetic private summary',json.dumps(saved))
     def test_symlinked_ledger_blocked(self):
         self.state.mkdir();target=Path(self.tmp.name).resolve()/'other';target.write_text('untouched')
         (self.state/'ledger.sqlite').symlink_to(target)
@@ -129,13 +151,16 @@ class BridgeTests(unittest.TestCase):
         try:from mcp import Client
         except ImportError:self.skipTest('run in workspace-bridge environment for SDK tests')
         async def run():
-            async with Client(create_server(self.state)) as client:
+            async with Client(create_server(self.state,audit_calls=True)) as client:
                 tools=await client.list_tools()
                 self.assertEqual({t.name for t in tools.tools},{'workspace_recall','workspace_checkpoint','workspace_health','search_local','read_local_artifact'})
                 result=await client.call_tool('workspace_checkpoint',{'checkpoint':checkpoint()})
                 self.assertFalse(result.is_error);self.assertTrue(result.structured_content['ok'])
                 recalled=await client.call_tool('workspace_recall',{'query':'브리지'})
                 self.assertEqual(recalled.structured_content['layer'],'warm')
+                audits=[json.loads(line) for line in (self.state/'bridge-call-audit.jsonl').read_text().splitlines()]
+                self.assertEqual(audits[-1]['tool'],'workspace_recall')
+                self.assertEqual(audits[-1]['layer'],'warm')
                 invalid=await client.call_tool('workspace_recall',{'query':{'private':'/Users/private/example'}})
                 self.assertNotIn('/Users/private/example',str(invalid))
                 self.assertFalse(invalid.structured_content['ok'])

@@ -10,10 +10,10 @@ AI Workspace Kit은 세 화면이 참고할 수 있는 **공통 작업 기억**�
 짧게 정리해 사용자 소유의 **비공개 GitHub 기억 저장소**에 두고, 연결된 도구가 필요할 때 찾아 읽습니다.
 큰 원본 대화나 견적서·PDF까지 GitHub에 올리지 않습니다. 이 공개 저장소에는 도구의 코드와 예제만 있습니다.
 
-[![Tests: 114 passed locally](https://img.shields.io/badge/tests-114%20passed%20locally-green.svg)](docs/VALIDATION.md)
+[![Tests: 118 passed locally](https://img.shields.io/badge/tests-118%20passed%20locally-green.svg)](docs/VALIDATION.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[빠른 시작](#빠른-시작) · [클라이언트 연결](docs/CLIENTS.md) · [GitHub 동기화·운영](OPERATIONS.md) · [보안](SECURITY.md) · [English](docs/README.en.md)
+[빠른 시작](#빠른-시작) · [클라이언트 연결](docs/CLIENTS.md) · [에이전트에 붙이는 규칙](docs/AGENT-GUIDANCE.md) · [검색 품질](docs/SEARCH-QUALITY.md) · [GitHub 동기화·운영](OPERATIONS.md) · [보안](SECURITY.md) · [English](docs/README.en.md)
 
 > **v0.1 기술 미리보기.** macOS에서 검증했습니다. Linux용 CI 예제를 포함하며 실제 Linux 실행은 아직 미검증입니다. Windows 네이티브는 지원하지 않습니다.
 > GitHub 연결만으로 모든 채팅이 자동 공유되지는 않습니다. 에이전트가 정제 요약을 기록해야 하며,
@@ -105,6 +105,8 @@ flowchart LR
 - GitHub의 정제 기록 수신·게시, 충돌 시 보존하고 중단
 - Markdown, TXT, JSON/JSONL, PDF, DOCX의 로컬 본문 검색
 - 원본 ID를 사용한 제한된 길이의 재읽기, 이동·변경·SSD 분리 상태 반환
+- 모든 검색어 일치가 없을 때만 부분 일치 후보를 제시하고, 원본 재읽기를 필수로 유지
+- 마지막 GitHub 게시 검증 시점과 로컬 정제 변경 상태 조회 (`ai-workspace status`)
 - 읽기 전용 MCP(Model Context Protocol, AI 도구 연결 규약)
 - 모델 호출 없는 정기 유지 작업
 

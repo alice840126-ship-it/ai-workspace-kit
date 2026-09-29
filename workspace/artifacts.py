@@ -313,12 +313,23 @@ class ArtifactIndex:
                   'roots': [{'label': r['label'], 'status': self._availability(r)} for r in roots]}
         if not tokens or SECRET.search(query):
             return output
-        match = ' AND '.join('"' + t + '"' for t in tokens)
-        rows = self.db.execute('''select a.*,bm25(artifact_fts) score from artifact_fts
+        def candidates(match):
+            return self.db.execute('''select a.*,bm25(artifact_fts) score from artifact_fts
             join artifacts a on a.id=artifact_fts.id where artifact_fts match ?
-            order by score,a.mtime desc limit 100''', (match,)).fetchall()
+            order by score,a.mtime desc limit 200''', (match,)).fetchall()
+        rows = candidates(' AND '.join('"' + t + '"' for t in tokens))
+        mode = 'all_terms'
+        if not rows and len(tokens) > 1:
+            # Natural follow-up wording often adds words absent from the file.
+            # This returns candidates only; callers must still read the source.
+            rows = candidates(' OR '.join('"' + t + '"' for t in tokens))
+            minimum = (len(tokens) + 1) // 2
+            wanted = set(tokens)
+            rows = [r for r in rows if len(wanted & set(terms(r['text'] + ' ' + r['label'] + ' ' + Path(r['path']).name.replace('_',' ')))) >= minimum]
+            mode = 'partial_terms'
         # Prefer filenames matching the subject; newest revision wins within that group.
-        rows.sort(key=lambda r:(-len(set(tokens)&set(terms(Path(r['path']).name.replace('_',' ')))),-r['mtime'],r['score']))
+        rows.sort(key=lambda r:(-len(set(tokens)&set(terms(Path(r['path']).name.replace('_',' ')))),
+                                -len(set(tokens)&set(terms(r['text']))),-r['mtime'],r['score']))
         for row in rows:
             p = Path(row['path']); root = self._root(p)
             if not root:
@@ -336,7 +347,7 @@ class ArtifactIndex:
             start = max(0, min(locations, default=0) - 100)
             output['results'].append({'id': row['id'], 'filename': p.name, 'path': str(p),
                 'topic': p.stem.replace('_',' ')[:100], 'collection':row['label'], 'modified_at': row['mtime'], 'snippet': text[start:start + 700],
-                'score': row['score'], 'status': status})
+                'score': row['score'], 'match_mode': mode, 'status': status})
             if len(output['results']) >= max(1, min(int(limit), 20)):
                 break
         return output
