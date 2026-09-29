@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "source": "manual",
+  "session": "demo-session",
+  "checkpoint": "design-decision",
+  "stamp": "2026-09-29T00:00:00+00:00",
+  "kind": "confirmed_summary",
+  "verified": true,
+  "explicit_memory": true,
+  "next_context": "DemoKit의 검색 기능 검증을 이어간다.",
+  "memory": {
+    "topic": "demokit",
+    "repo": "",
+    "business": false,
+    "sensitive": false,
+    "context": ["DemoKit은 가상 문서 검색 프로젝트다."],
+    "status": ["설계 초안을 확인했다."],
+    "decisions": ["원본 자료는 로컬에 두고 정제 기억만 공유한다."],
+    "todo": ["가상 견적서의 원본 읽기를 검증한다."],
+    "failed_approaches": [],
+    "links": [],
+    "completed_todo": []
+  }
+}
