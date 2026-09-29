@@ -8,6 +8,7 @@
 - Added copyable client guidance and a smoke-check sequence that requires actual tool calls. No new public-package ChatGPT, Aside, or voice invocation was performed in this update.
 - No semantic model or bulk embedding was installed. The measured lexical gap was addressed without model calls; the threshold and evidence needed before adding a local semantic option are in [SEARCH-QUALITY.md](SEARCH-QUALITY.md).
 - `git diff --check` and a local `gitleaks dir` scan passed before publication.
+- Published commit `5ef73b2` was cloned from GitHub into a new temporary checkout and virtual environment. Editable installation, `pip check`, the synthetic demo, and `ai-workspace status` all passed there. The demo reported zero network/model calls. This does not verify a new user's private GitHub binding or client-specific MCP registration.
 
 This record describes the public distribution, using synthetic data only.
 
