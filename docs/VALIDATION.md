@@ -19,6 +19,27 @@ This record describes the public distribution, using synthetic data only.
 - The source repository does not contain personal memory, native DBs, credentials, original customer
   documents, or the private deployment's Git history.
 
+## Fresh public-clone reproduction check — 2026-09-29
+
+The published GitHub `main` at `99b69a2` was cloned into a separate temporary directory;
+the maintainer's working checkout, private memory, and local service configuration were not used.
+
+- The README's editable install completed in a new virtual environment; `pip check`, `doctor`,
+  and `python -m workspace.demo` passed without an API key or model call.
+- All 114 tests passed from that public clone.
+- A second, non-editable installation ran `doctor` and the demo outside the checkout.
+- In fresh private test directories, `init` → example `checkpoint` → `recall` succeeded.
+  A copied synthetic quotation was indexed, searched, and freshly read by artifact ID;
+  the read content contained the documented VAT-inclusive amount and education count.
+- The installed `ai-workspace-mcp` executable was launched as a real stdio subprocess in
+  read-only mode. An MCP client saw only the four read-only tools, then successfully called
+  `workspace_recall`, `search_local`, and `read_local_artifact`.
+- The complete Git history at that revision was scanned with `gitleaks git`; no leak was found.
+
+This verifies the public package's local reproducibility. It does not verify a new user's
+private GitHub account, Codex/Aside registration, ChatGPT connector or tunnel, or voice tools.
+Those require client-specific setup and an actual call on the user's account.
+
 ## Evidence boundaries
 
 The private predecessor had actual ChatGPT text search/read calls for local documents. That establishes
