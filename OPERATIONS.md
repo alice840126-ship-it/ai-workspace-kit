@@ -141,3 +141,7 @@ stdio MCP는 클라이언트 연결을 종료하면 멈춥니다. 로컬 파일�
 기본 CLI/tick은 이를 호출하지 않습니다. 네이티브 스키마는 제품 버전에 따라 달라질 수 있으므로,
 별도 동의를 받은 범위와 테스트된 스키마에만 연결하세요. 원본 DB를 수정하거나 Git에 업로드하지 않습니다.
 `runtime.py`의 legacy 수집/요약 함수와 `alerts.py`는 기존 엔진 호환용이며 공개판 기본 진입점에서 호출하지 않습니다.
+
+### iCloud Obsidian vault roots
+
+An explicitly registered vault or subfolder under the current user's `Library/Mobile Documents/iCloud~md~obsidian/Documents` can be read. Register only the scope the user authorized with the existing local state; registration preserves the folder identity checks. `Library` itself and the Obsidian Documents container remain blocked. Secret files, denied subdirectories, symlinks, hardlinks, and credential-bearing content remain excluded. Existing tunnel aliases, profiles, and credentials are reused. After a reader-policy change, restart the existing managed runtime and verify the registered connector with health, search, and fresh source read calls.

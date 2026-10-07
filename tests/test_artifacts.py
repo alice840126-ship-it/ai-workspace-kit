@@ -94,6 +94,32 @@ class ArtifactsTest(unittest.TestCase):
         self.assertEqual(self.index.index()['errors'],1)
         r=self.index.search('견적서')['results'][0]
         self.assertIn('교육 3회',self.index.read(r['id'])['text'])
+    def test_explicit_icloud_obsidian_vault_preserves_root_boundaries(self):
+        home = self.base/'home'; home.mkdir()
+        vault = home/'Library/Mobile Documents/iCloud~md~obsidian/Documents/DemoVault'
+        self.root = vault/'DemoProject'; self.root.mkdir(parents=True)
+        note = self.write('source.md', 'ObsidianProject current source')
+        self.write('.env', 'ObsidianProject hidden')
+        self.write('credentials/note.md', 'ObsidianProject private')
+        self.config()
+        with patch('workspace.artifacts.Path.home', return_value=home):
+            self.assertEqual(self.index.index()['indexed'], 1)
+            result = self.index.search('ObsidianProject')['results']
+            self.assertEqual([r['path'] for r in result], [str(note)])
+            identity = result[0]['id']
+            self.assertIn('current source', self.index.read(identity)['text'])
+            self.root = vault; self.config()
+            self.assertEqual(self.index.roots()[0]['path'], str(vault))
+            for blocked in (home/'Library', vault.parent, home/'Library/Application Support/project',
+                            self.root/'credentials', self.root/'cache'):
+                blocked.mkdir(parents=True, exist_ok=True)
+                self.root = blocked; self.config()
+                with self.assertRaisesRegex(ValueError, 'invalid_artifact_roots'):
+                    self.index.roots()
+            self.root = vault/'DemoProject'; self.config()
+            (self.state/'artifact-roots.json').write_text('{"roots":[]}')
+            self.assertEqual(self.index.read(identity)['status'], 'not_allowed')
+
     def test_no_implicit_roots_and_root_symlink(self):
         (self.state/'artifact-roots.json').unlink()
         self.assertEqual(self.index.index()['status'],'not_configured')

@@ -36,6 +36,22 @@ def _blocked(name):
     return name.lower() in DENY or bool(BAD_NAME.search(name))
 
 
+def _root_ancestors_allowed(path):
+    """Permit an explicitly registered iCloud Obsidian vault or subfolder, not Library."""
+    denied = [(i, part) for i, part in enumerate(path.parts) if part.lower() in DENY]
+    if not denied:
+        return True
+    prefix = Path.home() / 'Library/Mobile Documents/iCloud~md~obsidian/Documents'
+    try:
+        relative = path.relative_to(prefix)
+    except ValueError:
+        return False
+    library_index = len(Path.home().parts)
+    return (len(relative.parts) >= 1
+            and denied == [(library_index, 'Library')]
+            and not any(_blocked(part) for part in relative.parts))
+
+
 def _plain_path(path):
     return path.is_absolute() and '..' not in path.parts and not any(p.is_symlink() for p in (path, *path.parents))
 
@@ -90,7 +106,7 @@ class ArtifactIndex:
                 raise ValueError()
             for root in roots:
                 p = Path(root['path'])
-                if not p.is_absolute() or '..' in p.parts or len(p.parts) < 4 or _blocked(p.name) or any(x.lower() in DENY for x in p.parts):
+                if not p.is_absolute() or '..' in p.parts or len(p.parts) < 4 or _blocked(p.name) or not _root_ancestors_allowed(p):
                     raise ValueError()
                 if not isinstance(root['label'], str) or not root['label'] or SECRET.search(root['label']):
                     raise ValueError()
