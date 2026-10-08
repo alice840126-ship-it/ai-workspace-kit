@@ -166,7 +166,7 @@ def audit_artifact_call(state, action, result):
     return result
 
 
-def create_server(state,*,allow_cold=False,read_only=False,audit_calls=False):
+def create_server(state,*,allow_cold=False,read_only=False,audit_calls=False,filesystem=False):
     from mcp.server import MCPServer
     from mcp.types import ToolAnnotations
     server=MCPServer('AI Workspace',version='1.0.0',log_level='CRITICAL',
@@ -203,7 +203,15 @@ def create_server(state,*,allow_cold=False,read_only=False,audit_calls=False):
     @server.tool(structured_output=True,annotations=ToolAnnotations(readOnlyHint=True,destructiveHint=False,openWorldHint=False))
     def workspace_health() -> dict[str, Any]:
         """Check availability and scope without exposing local paths or historical content."""
-        return bridge.health()
+        result = bridge.health()
+        result["filesystem_enabled"] = filesystem
+        if filesystem:
+            result["filesystem_scope"] = "OS-accessible paths; no business-folder allowlist; no elevation"
+            result["write_scope"] = "version_checked_recoverable_filesystem"
+        return result
+    if filesystem:
+        from .filesystem import register_tools
+        register_tools(server, state)
     return server
 
 
@@ -213,8 +221,9 @@ def main():
     parser.add_argument('--allow-cold',action='store_true',help='Explicitly authorize bounded historical excerpts for this host')
     parser.add_argument('--read-only',action='store_true',help='Omit checkpoint writes for remote clients')
     parser.add_argument('--audit-calls',action='store_true',help='Local tool/result metadata only; no document text or queries')
+    parser.add_argument("--filesystem", action="store_true", help="Explicitly enable OS-permission file management independently of checkpoint read-only mode")
     args=parser.parse_args()
-    try: create_server(args.state,allow_cold=args.allow_cold,read_only=args.read_only,audit_calls=args.audit_calls).run(transport='stdio')
+    try: create_server(args.state,allow_cold=args.allow_cold,read_only=args.read_only,audit_calls=args.audit_calls,filesystem=args.filesystem).run(transport='stdio')
     except Exception:
         print('workspace_bridge_start_failed',file=sys.stderr)
         raise SystemExit(1) from None

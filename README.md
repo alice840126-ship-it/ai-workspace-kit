@@ -1,6 +1,10 @@
 # AI Workspace Kit
 
-**Codex에서 쌓은 작업 기억을 ChatGPT 채팅과 Aside에서도 이어 쓰기 위한 도구입니다.**
+**ChatGPT·Codex·Aside에서 작업 기억을 이어 쓰고, Mac의 로컬 파일을 읽고 수정하는 도구입니다.**
+
+**파일 관리 MCP를 복사해서 받으셨나요? [한국어 설치·ChatGPT 연결 안내](START_HERE.md)부터 보세요.**
+새 `--filesystem` 옵션으로 OS가 접근을 허용한 폴더·외장 SSD에 파일 생성·수정·이동·복구를 수행합니다.
+계정·터널·개인 파일은 배포에 포함되지 않습니다. [전체 도구와 한계](docs/FILESYSTEM.md).
 
 Codex로 코드를 만들고 결정을 내린 뒤 ChatGPT에서 아이디어를 더 이야기하거나, Codex를 연결한
 Aside에서 같은 일을 이어갈 수 있습니다. 하지만 이 세 화면은 같은 프로젝트를 다뤄도 서로의 채팅을
@@ -10,12 +14,12 @@ AI Workspace Kit은 세 화면이 참고할 수 있는 **공통 작업 기억**�
 짧게 정리해 사용자 소유의 **비공개 GitHub 기억 저장소**에 두고, 연결된 도구가 필요할 때 찾아 읽습니다.
 큰 원본 대화나 견적서·PDF까지 GitHub에 올리지 않습니다. 이 공개 저장소에는 도구의 코드와 예제만 있습니다.
 
-[![Tests: 118 passed locally](https://img.shields.io/badge/tests-118%20passed%20locally-green.svg)](docs/VALIDATION.md)
+[![Tests: 136 passed locally](https://img.shields.io/badge/tests-136%20passed%20locally-green.svg)](docs/VALIDATION.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 [빠른 시작](#빠른-시작) · [클라이언트 연결](docs/CLIENTS.md) · [에이전트에 붙이는 규칙](docs/AGENT-GUIDANCE.md) · [검색 품질](docs/SEARCH-QUALITY.md) · [GitHub 동기화·운영](OPERATIONS.md) · [보안](SECURITY.md) · [English](docs/README.en.md)
 
-> **v0.1 기술 미리보기.** macOS에서 검증했습니다. Linux용 CI 예제를 포함하며 실제 Linux 실행은 아직 미검증입니다. Windows 네이티브는 지원하지 않습니다.
+> **v0.2 기술 미리보기.** macOS에서 검증했습니다. Linux용 CI 예제를 포함하며 실제 Linux 실행은 아직 미검증입니다. Windows 네이티브는 지원하지 않습니다.
 > GitHub 연결만으로 모든 채팅이 자동 공유되지는 않습니다. 에이전트가 정제 요약을 기록해야 하며,
 > ChatGPT에서 로컬 문서를 읽으려면 별도의 인증된 MCP 연결이 필요합니다. 음성 호출은 아직 검증하지 않았습니다.
 

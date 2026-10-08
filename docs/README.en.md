@@ -1,3 +1,7 @@
+# Filesystem MCP added in v0.2
+
+Opt in with `--filesystem` to expose 13 OS-permission-based filesystem tools (8 writes), with version checks, retained originals and recovery. No business-folder allowlist is imposed on these tools. `--read-only` disables memory checkpoint only, not filesystem writes. See the [Korean getting-started guide](../START_HERE.md) and [tool limits](FILESYSTEM.md). The existing memory workflow below remains available.
+
 # AI Workspace Kit
 
 Continue work across Codex, ChatGPT and Aside using concise, GitHub-backed work memory.

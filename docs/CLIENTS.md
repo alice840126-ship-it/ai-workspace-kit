@@ -1,3 +1,9 @@
+# 파일 관리 연결 추가 (v0.2)
+
+파일 쓰기를 포함한 설치와 ChatGPT 연결은 [START_HERE](../START_HERE.md)를 따릅니다.
+아래의 기존 연결 예시는 `--filesystem` 없이 기억·색인 도구를 연결하는 절차입니다.
+`--read-only`는 기억 checkpoint만 끄며, `--filesystem`과 함께 쓰면 파일 수정은 허용됩니다.
+
 # Codex · Aside · ChatGPT 연결
 
 먼저 README의 로컬 데모, 기억 초기화, 문서 허용 경로 등록을 완료하세요.

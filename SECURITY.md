@@ -5,8 +5,11 @@ This is a local-first technical preview, not a security certification.
 - Never make your memory repository public. This public repository contains code only.
 - Keep state, credentials, source documents and native chat files outside Git checkouts.
 - MCP is stdio by default. No unauthenticated HTTP server is shipped.
-- Use authenticated host/tunnel access and read-only tools for remote clients.
-- Artifact roots are explicit. Dotfiles, credential-like names, caches, packages and symlinks are rejected.
+- Use authenticated host/tunnel access. Filesystem writes require explicit `--filesystem` opt-in.
+- `--read-only` disables memory checkpoint only; it does NOT disable `--filesystem` writes.
+- Filesystem tools have no folder allowlist or secret-file filter: OS-accessible originals can be returned to the connected AI client. Connect only trusted accounts.
+- Version checks, retained originals, and scope-bound bulk-delete confirmation reduce risk; they do not lock out other applications. See [filesystem limits](docs/FILESYSTEM.md).
+- Legacy indexed artifact roots are explicit. Dotfiles, credential-like names, caches, packages and symlinks are rejected.
 - Search is not a fresh source read. Read validates current availability and identity.
 - Secret filters are defense in depth, not a guarantee that every private fact is detected.
 - Do not expose untrusted document instructions as tool authorization.

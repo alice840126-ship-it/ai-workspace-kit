@@ -1,3 +1,12 @@
+# Filesystem distribution validation — 2026-10-08
+
+- macOS, Python 3.14.5, MCP SDK 2.2.0: 136 tests passed, including version conflicts, recoverable delete/restore, binary reads, atomic race preservation, metadata, journal failures and old tool exposure.
+- A new virtual environment installed the package non-editably. `pip check` passed.
+- Outside the checkout, installed `ai-workspace-files-check` launched a real stdio MCP subprocess: 17 tools, create, edit, actual file reread, stale-version rejection, delete and restore passed with temporary synthetic files.
+- The installed original memory/search demo passed outside the checkout, with zero network/model calls.
+- No live runtime configuration, AP Storage files, user data or credentials were modified during packaging.
+- Recipient ChatGPT registration, OS permissions, login startup and physical SSD behavior require their own setup and live verification. This release does not install a login service or claim those checks passed on another Mac.
+
 # Validation record — 2026-09-29
 
 ## Cross-client guidance, publication status, and search quality update
