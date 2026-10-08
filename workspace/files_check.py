@@ -24,7 +24,10 @@ async def check(root: Path) -> dict:
                     'local_file_delete', 'local_file_restore', 'local_file_stat',
                     'local_file_read', 'local_file_search', 'local_file_history',
                     'local_file_diff', 'workspace_health', 'workspace_recall',
-                    'search_local', 'read_local_artifact'}
+                    'search_local', 'read_local_artifact', 'local_files_status', 'local_directory_list',
+                    'local_write_begin', 'local_write_chunk', 'local_write_status', 'local_write_commit',
+                    'local_write_abort', 'local_document_read', 'local_docx_create', 'local_docx_replace',
+                    'local_spreadsheet_write', 'local_pdf_select_pages', 'local_image_preview'}
         if set(names) != expected:
             raise RuntimeError('Unexpected MCP tool inventory')
 

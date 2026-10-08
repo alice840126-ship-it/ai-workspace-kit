@@ -195,7 +195,7 @@ class FilesystemTests(unittest.TestCase):
                 self.assertEqual(names,{'workspace_recall','workspace_health','search_local','read_local_artifact'})
             async with Client(create_server(self.root/'state',read_only=True,filesystem=True)) as client:
                 listed=(await client.list_tools()).tools
-                self.assertEqual(len(listed),17)
+                self.assertEqual(len(listed),30)
                 self.assertTrue(next(t for t in listed if t.name=='local_file_write').annotations.destructive_hint)
                 create=await client.call_tool('local_file_create',{'path':str(self.path),'content':'first'})
                 data=create.structured_content

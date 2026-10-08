@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-workspace-kit"
-version = "0.2.0"
+version = "0.3.0"
 description = "GitHub-backed refined memory and recoverable local filesystem MCP tools for AI clients"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = ["mcp==2.2.0"]
+dependencies = ["mcp==2.2.0", "chatgpt-local-files @ git+https://github.com/alice840126-ship-it/chatgpt-local-files.git@cb93501a4771fd2e2dc10b42a6f9327f16db3599"]
 
 [project.scripts]
 ai-workspace = "workspace.kit:main"

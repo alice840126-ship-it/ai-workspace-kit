@@ -166,7 +166,9 @@ def audit_artifact_call(state, action, result):
     return result
 
 
-def create_server(state,*,allow_cold=False,read_only=False,audit_calls=False,filesystem=False):
+def create_server(state,*,allow_cold=False,read_only=False,audit_calls=False,filesystem=False,execution=False):
+    if execution and not filesystem:
+        raise ValueError('execution_requires_filesystem')
     from mcp.server import MCPServer
     from mcp.types import ToolAnnotations
     server=MCPServer('AI Workspace',version='1.0.0',log_level='CRITICAL',
@@ -210,8 +212,8 @@ def create_server(state,*,allow_cold=False,read_only=False,audit_calls=False,fil
             result["write_scope"] = "version_checked_recoverable_filesystem"
         return result
     if filesystem:
-        from .filesystem import register_tools
-        register_tools(server, state)
+        from local_files.capabilities import register
+        register(server, state, execution=execution)
     return server
 
 
@@ -222,8 +224,9 @@ def main():
     parser.add_argument('--read-only',action='store_true',help='Omit checkpoint writes for remote clients')
     parser.add_argument('--audit-calls',action='store_true',help='Local tool/result metadata only; no document text or queries')
     parser.add_argument("--filesystem", action="store_true", help="Explicitly enable OS-permission file management independently of checkpoint read-only mode")
+    parser.add_argument('--execution',action='store_true',help='Opt in to authorized local program execution; requires --filesystem')
     args=parser.parse_args()
-    try: create_server(args.state,allow_cold=args.allow_cold,read_only=args.read_only,audit_calls=args.audit_calls,filesystem=args.filesystem).run(transport='stdio')
+    try: create_server(args.state,allow_cold=args.allow_cold,read_only=args.read_only,audit_calls=args.audit_calls,filesystem=args.filesystem,execution=args.execution).run(transport='stdio')
     except Exception:
         print('workspace_bridge_start_failed',file=sys.stderr)
         raise SystemExit(1) from None

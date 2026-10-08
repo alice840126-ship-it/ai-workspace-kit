@@ -1,0 +1,2 @@
+# Shared engine pinned to a reviewed immutable public commit.
+chatgpt-local-files @ git+https://github.com/alice840126-ship-it/chatgpt-local-files.git@cb93501a4771fd2e2dc10b42a6f9327f16db3599
