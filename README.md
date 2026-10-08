@@ -3,7 +3,7 @@
 **ChatGPT·Codex·Aside에서 작업 기억을 이어 쓰고, Mac의 로컬 파일을 읽고 수정하는 도구입니다.**
 
 **파일 관리 MCP를 복사해서 받으셨나요? [한국어 설치·ChatGPT 연결 안내](START_HERE.md)부터 보세요.**
-새 `--filesystem` 옵션으로 OS가 접근을 허용한 폴더·외장 SSD에 파일 생성·수정·이동·복구를 수행합니다.
+`--filesystem`으로 OS가 접근을 허용한 폴더·외장 SSD에 파일 생성·수정·이동·복구와 Word·Excel·PDF·이미지 처리를 수행합니다. 파일 엔진은 독립 배포판 [chatgpt-local-files](https://github.com/alice840126-ship-it/chatgpt-local-files)와 공유합니다. `--execution`을 추가하면 사용자 요청에 필요한 로컬 프로그램도 실행합니다. [공통 엔진 설치·범위](docs/SHARED_ENGINE.md)를 확인하세요.
 계정·터널·개인 파일은 배포에 포함되지 않습니다. [전체 도구와 한계](docs/FILESYSTEM.md).
 
 Codex로 코드를 만들고 결정을 내린 뒤 ChatGPT에서 아이디어를 더 이야기하거나, Codex를 연결한

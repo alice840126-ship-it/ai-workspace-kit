@@ -1,6 +1,6 @@
 # 파일 도구와 복구 범위
 
-`--filesystem`을 명시하면 다음 13개 도구를 추가합니다. `--read-only --filesystem` 조합은 기존 읽기 도구 4개와 함께 총 17개(쓰기 8개, 읽기 9개)를 노출합니다.
+`--filesystem`은 공통 `chatgpt-local-files` 엔진의 26개 도구를 추가합니다. `--read-only --filesystem`은 기존 기억·검색 읽기 도구 4개와 함께 총 30개를 노출합니다. `--execution`을 추가하면 프로그램 실행까지 총 31개입니다. 아래 13개 기본 파일 도구를 유지하며 Word·Excel·PDF·이미지와 대용량 재개 도구를 추가했습니다. 설치와 버전 고정은 [SHARED_ENGINE.md](SHARED_ENGINE.md)를 확인하세요.
 
 | 도구 | 기능 |
 |---|---|
