@@ -1,0 +1,8 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ai-workspace-kit",
+  "version": "0.3.0",
+  "description": "Continue work across Codex, ChatGPT and Aside with GitHub-backed work memory and read-only local document search.",
+  "repository": "https://github.com/alice840126-ship-it/ai-workspace-kit",
+  "license": "MIT"
+}

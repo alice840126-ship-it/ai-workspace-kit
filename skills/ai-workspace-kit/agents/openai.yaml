@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Workspace Kit"
+  short_description: "Codex·ChatGPT·Aside의 작업 기억과 로컬 문서 검색을 GitHub 기반으로 잇습니다"
+  default_prompt: "$ai-workspace-kit로 이어서 할 작업의 지난 결정과 다음 할 일을 workspace_recall로 찾고, 원본 문서가 필요하면 search_local 뒤 read_local_artifact로 확인해줘."
