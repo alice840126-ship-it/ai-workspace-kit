@@ -5,7 +5,7 @@
 - Linux (Debian, Python 3.12.16), fresh virtual environment, `pip install -e .` from the pinned `chatgpt-local-files` commit: **136 tests passed**, 1 skipped, and `python -m workspace.demo` completed with `network_calls: 0`, `model_calls: 0`.
 - Three checks depended on the host rather than the code and were made deterministic: an artifacts read test now raises `FileNotFoundError` with `ENOENT` so `Path.is_symlink` parity holds on Python 3.11–3.13; the history index test supplies a large free-space figure instead of reading the host disk; the replaced-file test writes different content length so detection no longer depends on filesystem timestamp granularity.
 - Added plugin packaging (`plugin.json`, root `SKILL.md`, `skills/ai-workspace-kit/SKILL.md`, `skills/ai-workspace-kit/agents/openai.yaml`) and matched every version label to `pyproject.toml` 0.3.0. The skill states the file tool count the engine actually exposes (26, 27 with `--execution`).
-- Python 3.11 and 3.13, macOS, and the GitHub Actions matrix in `docs/ci.example.yml` were **not** executed in this record; the workflow file could not be added by the automation account because its GitHub App token lacks the `workflows` permission.
+- Python 3.11 and 3.13, macOS, and the GitHub Actions matrix in `docs/ci.example.yml` were **not** executed in this record; the workflow is not yet enabled in this repository.
 
 # Filesystem distribution validation — 2026-10-08
 
