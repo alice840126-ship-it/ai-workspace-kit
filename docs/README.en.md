@@ -5,7 +5,7 @@
 Continue work across Codex, ChatGPT and Aside using concise, GitHub-backed work memory.
 Keep large source documents on your own machine and retrieve them through a read-only local MCP bridge.
 
-**Technical preview:** macOS verified; macOS and Linux tests run in GitHub Actions, native Windows unsupported. This is an independent
+**Technical preview:** macOS verified; Linux CI template included but not executed, native Windows unsupported. This is an independent
 project, not an official OpenAI, GitHub or Aside product. Voice tool invocation is unverified.
 
 ## Quick start
