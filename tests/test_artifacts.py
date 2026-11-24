@@ -1,4 +1,5 @@
 import json
+import errno
 import os
 from pathlib import Path
 import tempfile
@@ -78,7 +79,7 @@ class ArtifactsTest(unittest.TestCase):
         self.assertEqual(result['snippet'],'');self.assertEqual(result['status'],'root_unavailable')
         self.root.mkdir()
         self.assertEqual(self.index.read(identity)['status'],'root_identity_changed')
-        with patch('workspace.artifacts.Path.stat',side_effect=FileNotFoundError):
+        with patch('workspace.artifacts.Path.stat',side_effect=FileNotFoundError(errno.ENOENT,'gone')):
             self.assertEqual(self.index._availability({'path':'/Volumes/ssd/work','device':1,'inode':2}),'external_ssd_disconnected')
     def test_read_symlink_swap_and_pagination(self):
         p=self.write('quote.txt','ExampleCo '+('교육 3회 '*100))

@@ -21,7 +21,7 @@ class HistoryTests(unittest.TestCase):
   with self.file.open('ab') as f:f.write(b'\n')
   self.runfile();self.assertEqual(self.h.stats()['messages'],2);self.runfile();self.assertEqual(self.h.stats()['messages'],2)
  def test_replaced_file(self):
-  self.write([self.meta(),self.msg('old')]);self.runfile();self.file.unlink();self.write([self.meta(),self.msg('new')]);self.runfile()
+  self.write([self.meta(),self.msg('old')]);self.runfile();self.file.unlink();self.write([self.meta(),self.msg('new content')]);self.runfile()
   self.assertEqual(self.h.search('old'),[]);self.assertTrue(self.h.search('new'))
  def test_nonconversation_and_secrets(self):
   self.assertIsNone(narrative({'type':'reasoning','text':'private'}));self.assertIsNone(narrative({'type':'function_call_output','text':'private'}));self.assertIsNone(narrative([]))
@@ -71,7 +71,8 @@ class HistoryTests(unittest.TestCase):
   original=self.h.file
   def slow_file(path,deadline):
    result=original(path,deadline);time.sleep(.06);return result
-  with patch.object(self.h,'native',return_value=(0,0)),patch.object(self.h,'file',side_effect=slow_file):self.h.index(home,budget=.05)
+  enough=type('U',(),{'free':10**12})
+  with patch.object(self.h,'native',return_value=(0,0)),patch.object(self.h,'file',side_effect=slow_file),patch('workspace.history.shutil.disk_usage',return_value=enough):self.h.index(home,budget=.05)
   self.assertTrue(self.h.search('newlyadded'))
 
 if __name__=='__main__':unittest.main()
