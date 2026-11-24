@@ -1,13 +1,11 @@
-# Filesystem MCP added in v0.2
+# AI Workspace Kit v0.3
 
-Opt in with `--filesystem` to expose 13 OS-permission-based filesystem tools (8 writes), with version checks, retained originals and recovery. No business-folder allowlist is imposed on these tools. `--read-only` disables memory checkpoint only, not filesystem writes. See the [Korean getting-started guide](../START_HERE.md) and [tool limits](FILESYSTEM.md). The existing memory workflow below remains available.
-
-# AI Workspace Kit
+**Filesystem MCP (added in v0.2):** Opt in with `--filesystem` to expose 26 OS-permission-based file and document tools (27 with `--execution`), with version checks, retained originals and recovery. No business-folder allowlist is imposed on these tools. `--read-only` disables memory checkpoint only, not filesystem writes. See the [Korean getting-started guide](../START_HERE.md) and [tool limits](FILESYSTEM.md).
 
 Continue work across Codex, ChatGPT and Aside using concise, GitHub-backed work memory.
 Keep large source documents on your own machine and retrieve them through a read-only local MCP bridge.
 
-**Technical preview:** macOS verified, Linux CI template included but not executed, native Windows unsupported. This is an independent
+**Technical preview:** macOS verified; macOS and Linux tests run in GitHub Actions, native Windows unsupported. This is an independent
 project, not an official OpenAI, GitHub or Aside product. Voice tool invocation is unverified.
 
 ## Quick start
